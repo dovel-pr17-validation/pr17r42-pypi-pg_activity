@@ -1,0 +1,29 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - python: "3.10"
+            psycopg: "psycopg3"
+          - python: "3.14"
+            psycopg: "psycopg3"
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+          allow-prereleases: true
+      - name: Install tox
+        run: pip install tox
+      - name: Add fr_FR and zh_TW for test purposes
+        run: |
+           sudo locale-gen fr_FR zh_TW.EUC-TW
+           sudo update-locale
+      - name: Test
+        run: tox -e py-${{ matrix.psycopg }}

@@ -1,0 +1,8 @@
+.coverage
+.tox
+.vscode
+__pycache__/
+build/
+dist/
+htmlcov/
+pg_activity.egg-info
